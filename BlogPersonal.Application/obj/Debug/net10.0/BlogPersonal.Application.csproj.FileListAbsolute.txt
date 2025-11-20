@@ -1,0 +1,15 @@
+C:\Users\Admin\Documents\UNICDA-Asignaciones-Soft\Programacion-de-servicios-Web-2\Blog-Personal_Final\BlogPersonal.Application\bin\Debug\net10.0\BlogPersonal.Application.deps.json
+C:\Users\Admin\Documents\UNICDA-Asignaciones-Soft\Programacion-de-servicios-Web-2\Blog-Personal_Final\BlogPersonal.Application\bin\Debug\net10.0\BlogPersonal.Application.dll
+C:\Users\Admin\Documents\UNICDA-Asignaciones-Soft\Programacion-de-servicios-Web-2\Blog-Personal_Final\BlogPersonal.Application\bin\Debug\net10.0\BlogPersonal.Application.pdb
+C:\Users\Admin\Documents\UNICDA-Asignaciones-Soft\Programacion-de-servicios-Web-2\Blog-Personal_Final\BlogPersonal.Application\bin\Debug\net10.0\BlogPersonal.Domain.dll
+C:\Users\Admin\Documents\UNICDA-Asignaciones-Soft\Programacion-de-servicios-Web-2\Blog-Personal_Final\BlogPersonal.Application\bin\Debug\net10.0\BlogPersonal.Domain.pdb
+C:\Users\Admin\Documents\UNICDA-Asignaciones-Soft\Programacion-de-servicios-Web-2\Blog-Personal_Final\BlogPersonal.Application\obj\Debug\net10.0\BlogPersonal.Application.csproj.AssemblyReference.cache
+C:\Users\Admin\Documents\UNICDA-Asignaciones-Soft\Programacion-de-servicios-Web-2\Blog-Personal_Final\BlogPersonal.Application\obj\Debug\net10.0\BlogPersonal.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Admin\Documents\UNICDA-Asignaciones-Soft\Programacion-de-servicios-Web-2\Blog-Personal_Final\BlogPersonal.Application\obj\Debug\net10.0\BlogPersonal.Application.AssemblyInfoInputs.cache
+C:\Users\Admin\Documents\UNICDA-Asignaciones-Soft\Programacion-de-servicios-Web-2\Blog-Personal_Final\BlogPersonal.Application\obj\Debug\net10.0\BlogPersonal.Application.AssemblyInfo.cs
+C:\Users\Admin\Documents\UNICDA-Asignaciones-Soft\Programacion-de-servicios-Web-2\Blog-Personal_Final\BlogPersonal.Application\obj\Debug\net10.0\BlogPersonal.Application.csproj.CoreCompileInputs.cache
+C:\Users\Admin\Documents\UNICDA-Asignaciones-Soft\Programacion-de-servicios-Web-2\Blog-Personal_Final\BlogPersonal.Application\obj\Debug\net10.0\BlogPers.79818801.Up2Date
+C:\Users\Admin\Documents\UNICDA-Asignaciones-Soft\Programacion-de-servicios-Web-2\Blog-Personal_Final\BlogPersonal.Application\obj\Debug\net10.0\BlogPersonal.Application.dll
+C:\Users\Admin\Documents\UNICDA-Asignaciones-Soft\Programacion-de-servicios-Web-2\Blog-Personal_Final\BlogPersonal.Application\obj\Debug\net10.0\refint\BlogPersonal.Application.dll
+C:\Users\Admin\Documents\UNICDA-Asignaciones-Soft\Programacion-de-servicios-Web-2\Blog-Personal_Final\BlogPersonal.Application\obj\Debug\net10.0\BlogPersonal.Application.pdb
+C:\Users\Admin\Documents\UNICDA-Asignaciones-Soft\Programacion-de-servicios-Web-2\Blog-Personal_Final\BlogPersonal.Application\obj\Debug\net10.0\ref\BlogPersonal.Application.dll

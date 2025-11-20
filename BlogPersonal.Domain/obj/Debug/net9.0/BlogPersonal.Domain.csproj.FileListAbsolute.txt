@@ -1,0 +1,11 @@
+C:\Users\Admin\Documents\UNICDA-Asignaciones-Soft\Programacion-de-servicios-Web-2\Blog-Personal_Final\BlogPersonal.Domain\bin\Debug\net9.0\BlogPersonal.Domain.deps.json
+C:\Users\Admin\Documents\UNICDA-Asignaciones-Soft\Programacion-de-servicios-Web-2\Blog-Personal_Final\BlogPersonal.Domain\bin\Debug\net9.0\BlogPersonal.Domain.dll
+C:\Users\Admin\Documents\UNICDA-Asignaciones-Soft\Programacion-de-servicios-Web-2\Blog-Personal_Final\BlogPersonal.Domain\bin\Debug\net9.0\BlogPersonal.Domain.pdb
+C:\Users\Admin\Documents\UNICDA-Asignaciones-Soft\Programacion-de-servicios-Web-2\Blog-Personal_Final\BlogPersonal.Domain\obj\Debug\net9.0\BlogPersonal.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Admin\Documents\UNICDA-Asignaciones-Soft\Programacion-de-servicios-Web-2\Blog-Personal_Final\BlogPersonal.Domain\obj\Debug\net9.0\BlogPersonal.Domain.AssemblyInfoInputs.cache
+C:\Users\Admin\Documents\UNICDA-Asignaciones-Soft\Programacion-de-servicios-Web-2\Blog-Personal_Final\BlogPersonal.Domain\obj\Debug\net9.0\BlogPersonal.Domain.AssemblyInfo.cs
+C:\Users\Admin\Documents\UNICDA-Asignaciones-Soft\Programacion-de-servicios-Web-2\Blog-Personal_Final\BlogPersonal.Domain\obj\Debug\net9.0\BlogPersonal.Domain.csproj.CoreCompileInputs.cache
+C:\Users\Admin\Documents\UNICDA-Asignaciones-Soft\Programacion-de-servicios-Web-2\Blog-Personal_Final\BlogPersonal.Domain\obj\Debug\net9.0\BlogPersonal.Domain.dll
+C:\Users\Admin\Documents\UNICDA-Asignaciones-Soft\Programacion-de-servicios-Web-2\Blog-Personal_Final\BlogPersonal.Domain\obj\Debug\net9.0\refint\BlogPersonal.Domain.dll
+C:\Users\Admin\Documents\UNICDA-Asignaciones-Soft\Programacion-de-servicios-Web-2\Blog-Personal_Final\BlogPersonal.Domain\obj\Debug\net9.0\BlogPersonal.Domain.pdb
+C:\Users\Admin\Documents\UNICDA-Asignaciones-Soft\Programacion-de-servicios-Web-2\Blog-Personal_Final\BlogPersonal.Domain\obj\Debug\net9.0\ref\BlogPersonal.Domain.dll

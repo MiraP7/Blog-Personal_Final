@@ -1,0 +1,8 @@
+{
+  "name": "blog-personal-root",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "cd BlogPersonal.Web && npm run dev",
+    "install:all": "cd BlogPersonal.Web && npm install"
+  }
+}

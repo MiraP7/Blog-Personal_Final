@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BlogPersonal.Application.Handlers.Posts
 {
-    public class GetPostByIdHandler : IRequestHandler<GetPostByIdQuery, PostDto>
+    public class GetPostByIdHandler : IRequestHandler<GetPostByIdQuery, PostDto?>
     {
         private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
@@ -20,7 +20,7 @@ namespace BlogPersonal.Application.Handlers.Posts
             _mapper = mapper;
         }
 
-        public async Task<PostDto> Handle(GetPostByIdQuery request, CancellationToken cancellationToken)
+        public async Task<PostDto?> Handle(GetPostByIdQuery request, CancellationToken cancellationToken)
         {
             var post = await _context.Posts
                 .Include(p => p.Autor)
@@ -30,7 +30,7 @@ namespace BlogPersonal.Application.Handlers.Posts
                 .Include(p => p.PostEtiquetas).ThenInclude(pe => pe.Etiqueta)
                 .FirstOrDefaultAsync(p => p.Id == request.Id, cancellationToken);
 
-            if (post == null) return null!;
+            if (post == null) return null;
 
             return _mapper.Map<PostDto>(post);
         }

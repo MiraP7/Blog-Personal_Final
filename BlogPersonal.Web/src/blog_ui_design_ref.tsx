@@ -96,12 +96,13 @@ export default function BlogUI() {
                 className="bg-transparent ml-2 outline-none text-sm text-white placeholder-slate-500 w-48"
               />
             </div>
-            <button className="p-2 hover:bg-slate-700 rounded-lg transition-colors">
+            <button className="p-2 hover:bg-slate-700 rounded-lg transition-colors" aria-label="Usuario">
               <User className="w-5 h-5 text-slate-400" />
             </button>
             <button
               className="md:hidden p-2"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label={mobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
@@ -207,6 +208,7 @@ export default function BlogUI() {
               <button
                 onClick={() => setSelectedPost(null)}
                 className="text-slate-400 hover:text-white"
+                aria-label="Cerrar"
               >
                 <X className="w-6 h-6" />
               </button>

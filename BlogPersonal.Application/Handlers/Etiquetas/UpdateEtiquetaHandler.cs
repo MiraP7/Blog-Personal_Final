@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BlogPersonal.Application.Handlers.Etiquetas
 {
-    public class UpdateEtiquetaHandler : IRequestHandler<UpdateEtiquetaCommand, EtiquetaDto>
+    public class UpdateEtiquetaHandler : IRequestHandler<UpdateEtiquetaCommand, EtiquetaDto?>
     {
         private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
@@ -19,7 +19,7 @@ namespace BlogPersonal.Application.Handlers.Etiquetas
             _mapper = mapper;
         }
 
-        public async Task<EtiquetaDto> Handle(UpdateEtiquetaCommand request, CancellationToken cancellationToken)
+        public async Task<EtiquetaDto?> Handle(UpdateEtiquetaCommand request, CancellationToken cancellationToken)
         {
             var etiqueta = await _context.Etiquetas.FindAsync(new object[] { request.Id }, cancellationToken);
 

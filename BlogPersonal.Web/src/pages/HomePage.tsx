@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useSearchParams, Link as RouterLink } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
 import {
   Card,
   CardContent,
@@ -9,13 +8,11 @@ import {
   Box,
   Avatar,
   Chip,
-  Button,
   CircularProgress,
   Alert,
   CardActionArea,
   useTheme
 } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import CommentIcon from '@mui/icons-material/Comment';
 
@@ -39,8 +36,7 @@ const HomePage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const searchTerm = searchParams.get('search');
   const theme = useTheme();
-  const { user } = useAuth();
-  const isAuthorOrAdmin = user?.rol === 'Autor' || user?.rol === 'Administrador';
+  // const { user } = useAuth(); // user is not used in this component anymore
 
   useEffect(() => {
     const fetchPosts = async () => {

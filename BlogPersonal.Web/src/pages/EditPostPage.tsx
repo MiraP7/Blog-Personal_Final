@@ -74,7 +74,7 @@ const EditPostPage: React.FC = () => {
     };
 
     fetchData();
-  }, [id, token, navigate]);
+  }, [id, token, navigate, user]);
 
   const generateSlug = (text: string) => {
     return text

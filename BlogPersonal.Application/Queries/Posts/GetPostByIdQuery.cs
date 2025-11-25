@@ -3,7 +3,7 @@ using MediatR;
 
 namespace BlogPersonal.Application.Queries.Posts
 {
-    public class GetPostByIdQuery : IRequest<PostDto>
+    public class GetPostByIdQuery : IRequest<PostDto?>
     {
         public int Id { get; set; }
 

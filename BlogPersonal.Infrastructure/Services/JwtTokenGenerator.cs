@@ -22,7 +22,9 @@ namespace BlogPersonal.Infrastructure.Services
         public string GenerateToken(Usuario usuario)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_configuration["JwtSettings:Secret"]!);
+            var secret = _configuration["JwtSettings:Secret"] 
+                ?? throw new InvalidOperationException("JwtSettings:Secret no está configurado en appsettings.json");
+            var key = Encoding.ASCII.GetBytes(secret);
 
             var claims = new List<Claim>
             {

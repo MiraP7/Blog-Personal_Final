@@ -32,6 +32,10 @@ namespace BlogPersonal.Application.Handlers.Comments
             {
                  // Fallback if seed didn't run or name is different
                  estadoPendiente = await _context.EstadosComentario.FirstOrDefaultAsync(cancellationToken);
+                 if (estadoPendiente == null)
+                 {
+                     throw new Exception("No se encontró ningún estado de comentario en la base de datos");
+                 }
             }
 
             var comment = new Comentario
@@ -40,7 +44,7 @@ namespace BlogPersonal.Application.Handlers.Comments
                 AutorId = request.UserId,
                 Contenido = request.CommentDto.Contenido,
                 ComentarioPadreId = request.CommentDto.ComentarioPadreId,
-                EstadoId = estadoPendiente!.Id,
+                EstadoId = estadoPendiente.Id,
                 FechaCreacion = DateTime.UtcNow
             };
 

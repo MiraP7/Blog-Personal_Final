@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
-import { useSearchParams, Link as RouterLink } from 'react-router-dom';
+import { useSearchParams, Link as RouterLink, useLocation } from 'react-router-dom';
 import {
   Card,
   CardContent,
@@ -23,10 +23,9 @@ interface Post {
   autorNombre: string;
   fechaPublicacion: string;
   slug: string;
-  // Mock fields for UI if not in API
-  categoria?: string;
-  vistas?: number;
-  comentarios?: number;
+  vistas: number;
+  comentariosCount: number;
+  categorias: string[];
 }
 
 const HomePage: React.FC = () => {
@@ -36,39 +35,62 @@ const HomePage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const searchTerm = searchParams.get('search');
   const theme = useTheme();
-  // const { user } = useAuth(); // user is not used in this component anymore
+  const location = useLocation(); // Para detectar navegación
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      setLoading(true);
-      try {
-        const url = searchTerm 
-          ? `http://localhost:5141/api/posts?search=${encodeURIComponent(searchTerm)}`
-          : 'http://localhost:5141/api/posts';
-          
-        const response = await axios.get(url);
-        const data = response.data;
-        const items = Array.isArray(data) ? data : (data.items || []);
+  const fetchPosts = useCallback(async (showLoading = true) => {
+    if (showLoading) setLoading(true);
+    try {
+      const url = searchTerm 
+        ? `http://localhost:5141/api/posts?search=${encodeURIComponent(searchTerm)}`
+        : 'http://localhost:5141/api/posts';
         
-        // Add mock data for UI demo
-        const enrichedItems = items.map((p: Post) => ({
-          ...p,
-          categoria: 'Tecnología', // Mock
-          vistas: Math.floor(Math.random() * 1000) + 100, // Mock
-          comentarios: Math.floor(Math.random() * 50) // Mock
-        }));
+      // Agregar timestamp para evitar caché del navegador
+      const response = await axios.get(url, {
+        headers: {
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache'
+        }
+      });
+      const data = response.data;
+      const items = Array.isArray(data) ? data : (data.items || []);
 
-        setPosts(enrichedItems);
-      } catch (err: unknown) {
-        console.error('Error fetching posts:', err);
-        setError('No se pudieron cargar los posts. Asegúrate de que la API esté corriendo.');
-      } finally {
-        setLoading(false);
-      }
+      setPosts(items);
+      setError(null);
+    } catch (err: unknown) {
+      console.error('Error fetching posts:', err);
+      setError('No se pudieron cargar los posts. Asegúrate de que la API esté corriendo.');
+    } finally {
+      setLoading(false);
+    }
+  }, [searchTerm]);
+
+  // Cargar al montar y cuando cambia searchTerm o navegación
+  useEffect(() => {
+    fetchPosts();
+  }, [fetchPosts, location.key]); // location.key cambia en cada navegación
+
+  // Refrescar cuando la ventana recupera el foco (usuario regresa de otro tab/página)
+  useEffect(() => {
+    const handleFocus = () => {
+      fetchPosts(false); // Sin mostrar loading para que sea más fluido
     };
 
-    fetchPosts();
-  }, [searchTerm]);
+    window.addEventListener('focus', handleFocus);
+    
+    // También refrescar cuando el usuario navega de regreso
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'visible') {
+        fetchPosts(false);
+      }
+    };
+    
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      window.removeEventListener('focus', handleFocus);
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [fetchPosts]);
 
   if (loading) {
     return (
@@ -135,7 +157,7 @@ const HomePage: React.FC = () => {
               <CardContent sx={{ flexGrow: 1, p: 3 }}>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
                   <Chip 
-                    label={post.categoria} 
+                    label={post.categorias && post.categorias.length > 0 ? post.categorias[0] : 'General'} 
                     size="small" 
                     sx={{ 
                       bgcolor: `${theme.palette.primary.main}20`, 
@@ -173,7 +195,7 @@ const HomePage: React.FC = () => {
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                       <CommentIcon sx={{ fontSize: 14, color: 'text.secondary' }} />
-                      <Typography variant="caption" color="text.secondary">{post.comentarios}</Typography>
+                      <Typography variant="caption" color="text.secondary">{post.comentariosCount}</Typography>
                     </Box>
                   </Box>
                 </Box>

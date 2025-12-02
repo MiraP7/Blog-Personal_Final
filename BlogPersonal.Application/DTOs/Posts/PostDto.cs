@@ -18,6 +18,7 @@ namespace BlogPersonal.Application.DTOs.Posts
         public DateTime FechaCreacion { get; set; }
         public DateTime? FechaPublicacion { get; set; }
         public int Vistas { get; set; }
+        public int ComentariosCount { get; set; }
         public List<string> Categorias { get; set; } = new List<string>();
         public List<EtiquetaDto> Etiquetas { get; set; } = new List<EtiquetaDto>();
     }

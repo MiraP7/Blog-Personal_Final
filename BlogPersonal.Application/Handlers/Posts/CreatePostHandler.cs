@@ -6,7 +6,10 @@ using BlogPersonal.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Globalization;
 using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -27,8 +30,8 @@ namespace BlogPersonal.Application.Handlers.Posts
         {
             var dto = request.PostDto;
 
-            // Generate Slug
-            var slug = dto.Titulo.ToLower().Replace(" ", "-");
+            // Generate Slug - URL-safe
+            var slug = GenerateSlug(dto.Titulo);
             if (await _context.Posts.AnyAsync(p => p.Slug == slug, cancellationToken))
             {
                 slug = $"{slug}-{Guid.NewGuid().ToString().Substring(0, 8)}";
@@ -81,6 +84,41 @@ namespace BlogPersonal.Application.Handlers.Posts
                 .FirstOrDefaultAsync(p => p.Id == post.Id, cancellationToken);
 
             return _mapper.Map<PostDto>(createdPost);
+        }
+
+        private static string GenerateSlug(string title)
+        {
+            // Normalize and remove diacritics (á -> a, ñ -> n, etc.)
+            var normalizedString = title.Normalize(NormalizationForm.FormD);
+            var stringBuilder = new StringBuilder();
+
+            foreach (var c in normalizedString)
+            {
+                var unicodeCategory = CharUnicodeInfo.GetUnicodeCategory(c);
+                if (unicodeCategory != UnicodeCategory.NonSpacingMark)
+                {
+                    stringBuilder.Append(c);
+                }
+            }
+
+            var slug = stringBuilder.ToString().Normalize(NormalizationForm.FormC);
+            
+            // Convert to lowercase
+            slug = slug.ToLowerInvariant();
+            
+            // Replace spaces with hyphens
+            slug = slug.Replace(" ", "-");
+            
+            // Remove all non-alphanumeric characters except hyphens
+            slug = Regex.Replace(slug, @"[^a-z0-9\-]", "");
+            
+            // Replace multiple hyphens with single hyphen
+            slug = Regex.Replace(slug, @"-+", "-");
+            
+            // Trim hyphens from start and end
+            slug = slug.Trim('-');
+
+            return slug;
         }
     }
 }

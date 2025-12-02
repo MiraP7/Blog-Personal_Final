@@ -9,3 +9,4 @@ C:\Users\Admin\Documents\UNICDA-Asignaciones-Soft\Programacion-de-servicios-Web-
 C:\Users\Admin\Documents\UNICDA-Asignaciones-Soft\Programacion-de-servicios-Web-2\Blog-Personal_Final\BlogPersonal.Domain\obj\Debug\net9.0\refint\BlogPersonal.Domain.dll
 C:\Users\Admin\Documents\UNICDA-Asignaciones-Soft\Programacion-de-servicios-Web-2\Blog-Personal_Final\BlogPersonal.Domain\obj\Debug\net9.0\BlogPersonal.Domain.pdb
 C:\Users\Admin\Documents\UNICDA-Asignaciones-Soft\Programacion-de-servicios-Web-2\Blog-Personal_Final\BlogPersonal.Domain\obj\Debug\net9.0\ref\BlogPersonal.Domain.dll
+C:\Users\Admin\Documents\UNICDA-Asignaciones-Soft\Programacion-de-servicios-Web-2\Blog-Personal_Final\BlogPersonal.Domain\obj\Debug\net9.0\BlogPersonal.Domain.sourcelink.json

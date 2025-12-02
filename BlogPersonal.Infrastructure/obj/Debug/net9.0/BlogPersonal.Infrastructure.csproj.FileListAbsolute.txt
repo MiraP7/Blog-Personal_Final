@@ -17,3 +17,4 @@ C:\Users\Admin\Documents\UNICDA-Asignaciones-Soft\Programacion-de-servicios-Web-
 C:\Users\Admin\Documents\UNICDA-Asignaciones-Soft\Programacion-de-servicios-Web-2\Blog-Personal_Final\BlogPersonal.Infrastructure\obj\Debug\net9.0\BlogPersonal.Infrastructure.pdb
 C:\Users\Admin\Documents\UNICDA-Asignaciones-Soft\Programacion-de-servicios-Web-2\Blog-Personal_Final\BlogPersonal.Infrastructure\obj\Debug\net9.0\BlogPersonal.Infrastructure.genruntimeconfig.cache
 C:\Users\Admin\Documents\UNICDA-Asignaciones-Soft\Programacion-de-servicios-Web-2\Blog-Personal_Final\BlogPersonal.Infrastructure\obj\Debug\net9.0\ref\BlogPersonal.Infrastructure.dll
+C:\Users\Admin\Documents\UNICDA-Asignaciones-Soft\Programacion-de-servicios-Web-2\Blog-Personal_Final\BlogPersonal.Infrastructure\obj\Debug\net9.0\BlogPersonal.Infrastructure.sourcelink.json

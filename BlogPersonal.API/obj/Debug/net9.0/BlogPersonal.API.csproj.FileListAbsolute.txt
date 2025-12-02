@@ -141,3 +141,4 @@ C:\Users\Admin\Documents\UNICDA-Asignaciones-Soft\Programacion-de-servicios-Web-
 C:\Users\Admin\Documents\UNICDA-Asignaciones-Soft\Programacion-de-servicios-Web-2\Blog-Personal_Final\BlogPersonal.API\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\Admin\Documents\UNICDA-Asignaciones-Soft\Programacion-de-servicios-Web-2\Blog-Personal_Final\BlogPersonal.API\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerUI.dll
 C:\Users\Admin\Documents\UNICDA-Asignaciones-Soft\Programacion-de-servicios-Web-2\Blog-Personal_Final\BlogPersonal.API\bin\Debug\net9.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Users\Admin\Documents\UNICDA-Asignaciones-Soft\Programacion-de-servicios-Web-2\Blog-Personal_Final\BlogPersonal.API\obj\Debug\net9.0\BlogPersonal.API.sourcelink.json

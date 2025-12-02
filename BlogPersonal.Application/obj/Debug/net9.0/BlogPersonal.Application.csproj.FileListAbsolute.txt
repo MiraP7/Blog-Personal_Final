@@ -13,3 +13,4 @@ C:\Users\Admin\Documents\UNICDA-Asignaciones-Soft\Programacion-de-servicios-Web-
 C:\Users\Admin\Documents\UNICDA-Asignaciones-Soft\Programacion-de-servicios-Web-2\Blog-Personal_Final\BlogPersonal.Application\obj\Debug\net9.0\refint\BlogPersonal.Application.dll
 C:\Users\Admin\Documents\UNICDA-Asignaciones-Soft\Programacion-de-servicios-Web-2\Blog-Personal_Final\BlogPersonal.Application\obj\Debug\net9.0\BlogPersonal.Application.pdb
 C:\Users\Admin\Documents\UNICDA-Asignaciones-Soft\Programacion-de-servicios-Web-2\Blog-Personal_Final\BlogPersonal.Application\obj\Debug\net9.0\ref\BlogPersonal.Application.dll
+C:\Users\Admin\Documents\UNICDA-Asignaciones-Soft\Programacion-de-servicios-Web-2\Blog-Personal_Final\BlogPersonal.Application\obj\Debug\net9.0\BlogPersonal.Application.sourcelink.json

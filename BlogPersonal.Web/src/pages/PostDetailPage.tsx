@@ -21,6 +21,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import CommentsSection from '../components/CommentsSection';
 
 interface Tag {
@@ -37,6 +38,7 @@ interface Post {
   fechaPublicacion: string;
   categorias: string[];
   etiquetas: Tag[];
+  vistas: number;
 }
 
 const PostDetailPage: React.FC = () => {
@@ -132,6 +134,10 @@ const PostDetailPage: React.FC = () => {
               <Typography variant="body2">
                 {new Date(post.fechaPublicacion).toLocaleDateString()}
               </Typography>
+            </Box>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <VisibilityIcon fontSize="small" />
+              <Typography variant="body2">{post.vistas} vistas</Typography>
             </Box>
           </Box>
 

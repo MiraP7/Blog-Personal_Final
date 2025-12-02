@@ -120,7 +120,7 @@ const CommentsSection: React.FC<CommentsSectionProps> = ({ postId, comments, onC
   return (
     <Box sx={{ mt: 6 }}>
       <Typography variant="h5" gutterBottom fontWeight="bold">
-        Comentarios
+        Comentarios ({comments.length})
       </Typography>
       
       {isAuthenticated ? (

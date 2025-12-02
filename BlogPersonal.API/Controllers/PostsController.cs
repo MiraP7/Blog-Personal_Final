@@ -155,5 +155,23 @@ namespace BlogPersonal.API.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
+
+        [HttpPost("{id}/views")]
+        public async Task<ActionResult<bool>> IncrementViews(int id)
+        {
+            try
+            {
+                var command = new IncrementPostViewsCommand(id);
+                var result = await _mediator.Send(command);
+
+                if (!result) return NotFound();
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
     }
 }

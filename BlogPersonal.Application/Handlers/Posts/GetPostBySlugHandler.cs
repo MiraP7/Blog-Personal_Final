@@ -26,9 +26,17 @@ namespace BlogPersonal.Application.Handlers.Posts
                 .Include(p => p.Autor)
                 .Include(p => p.Estado)
                 .Include(p => p.Idioma)
+                .Include(p => p.Comentarios)
                 .Include(p => p.PostCategorias).ThenInclude(pc => pc.Categoria)
                 .Include(p => p.PostEtiquetas).ThenInclude(pe => pe.Etiqueta)
                 .FirstOrDefaultAsync(p => p.Slug == request.Slug, cancellationToken);
+
+            if (post == null) return null;
+
+            // Incrementar vistas
+            post.Vistas++;
+            _context.Posts.Update(post);
+            await _context.SaveChangesAsync(cancellationToken);
 
             return _mapper.Map<PostDto>(post);
         }

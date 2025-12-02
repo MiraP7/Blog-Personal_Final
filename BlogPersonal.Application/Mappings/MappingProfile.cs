@@ -19,6 +19,7 @@ namespace BlogPersonal.Application.Mappings
                 .ForMember(dest => dest.Estado, opt => opt.MapFrom(src => src.Estado.Nombre))
                 .ForMember(dest => dest.EstadoId, opt => opt.MapFrom(src => src.EstadoId))
                 .ForMember(dest => dest.Idioma, opt => opt.MapFrom(src => src.Idioma.Nombre))
+                .ForMember(dest => dest.ComentariosCount, opt => opt.MapFrom(src => src.Comentarios.Count))
                 .ForMember(dest => dest.Categorias, opt => opt.MapFrom(src => src.PostCategorias.Select(pc => pc.Categoria.Nombre).ToList()))
                 .ForMember(dest => dest.Etiquetas, opt => opt.MapFrom(src => src.PostEtiquetas.Select(pe => pe.Etiqueta).ToList()));
 

@@ -27,6 +27,7 @@ namespace BlogPersonal.Application.Handlers.Posts
                 .Include(p => p.Autor)
                 .Include(p => p.Estado)
                 .Include(p => p.Idioma)
+                .Include(p => p.Comentarios)
                 .Include(p => p.PostCategorias).ThenInclude(pc => pc.Categoria)
                 .Include(p => p.PostEtiquetas).ThenInclude(pe => pe.Etiqueta)
                 .Where(p => p.EstadoId == 2) // Only Public posts

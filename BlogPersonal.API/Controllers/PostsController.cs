@@ -25,7 +25,18 @@ namespace BlogPersonal.API.Controllers
         [HttpGet]
         public async Task<ActionResult<List<PostDto>>> GetPosts([FromQuery] string? search)
         {
-            var posts = await _mediator.Send(new GetPostsQuery(search));
+            // Get user info if authenticated
+            int? userId = null;
+            string? userRole = null;
+            
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdClaim != null)
+            {
+                userId = int.Parse(userIdClaim.Value);
+                userRole = User.FindFirst(ClaimTypes.Role)?.Value;
+            }
+
+            var posts = await _mediator.Send(new GetPostsQuery(search, userId, userRole));
             return Ok(posts);
         }
 
@@ -46,7 +57,36 @@ namespace BlogPersonal.API.Controllers
         {
             var post = await _mediator.Send(new GetPostByIdQuery(id));
             if (post == null) return NotFound();
-            return Ok(post);
+
+            // Visibility Logic based on user role:
+            // EstadoId: 1=Borrador, 2=Publicado, 3=Archivado, 4=Privado
+            
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
+            var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
+
+            // Autor/Admin can see ALL posts
+            if (userRole == "Autor" || userRole == "Administrador")
+            {
+                return Ok(post);
+            }
+
+            // Any authenticated user can see Public (2) + Private (4)
+            if (userIdClaim != null)
+            {
+                if (post.EstadoId == 2 || post.EstadoId == 4)
+                {
+                    return Ok(post);
+                }
+                return Forbid();
+            }
+
+            // Anonymous users can only see Public (2)
+            if (post.EstadoId == 2)
+            {
+                return Ok(post);
+            }
+
+            return Forbid();
         }
 
         [HttpGet("slug/{slug}")]
@@ -55,23 +95,30 @@ namespace BlogPersonal.API.Controllers
             var post = await _mediator.Send(new GetPostBySlugQuery(slug));
             if (post == null) return NotFound();
 
-            // Visibility Logic
-            // 1: Borrador (Saved) - Only Creator
-            // 2: Publicado (Public) - Everyone
-            // 3: Archivado - Only Creator (or Admin)
-            // 4: Privado - Only Creator (or Admin)
-
-            if (post.EstadoId == 2) return Ok(post);
-
-            // Check authentication for non-public posts
+            // Visibility Logic based on user role:
+            // EstadoId: 1=Borrador, 2=Publicado, 3=Archivado, 4=Privado
+            
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
-            if (userIdClaim == null) return Forbid(); // Or NotFound to hide existence
+            var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
 
-            int userId = int.Parse(userIdClaim.Value);
-            var isAdmin = User.IsInRole("Administrador");
+            // Autor/Admin can see ALL posts
+            if (userRole == "Autor" || userRole == "Administrador")
+            {
+                return Ok(post);
+            }
 
-            // Allow if Admin or Creator
-            if (isAdmin || post.AutorId == userId)
+            // Any authenticated user can see Public (2) + Private (4)
+            if (userIdClaim != null)
+            {
+                if (post.EstadoId == 2 || post.EstadoId == 4)
+                {
+                    return Ok(post);
+                }
+                return Forbid();
+            }
+
+            // Anonymous users can only see Public (2)
+            if (post.EstadoId == 2)
             {
                 return Ok(post);
             }
@@ -80,7 +127,7 @@ namespace BlogPersonal.API.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Autor,Administrador")]
+        [Authorize(Roles = "Autor")]
         public async Task<ActionResult<PostDto>> CreatePost(CreatePostDto createPostDto)
         {
             try
@@ -101,7 +148,7 @@ namespace BlogPersonal.API.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "Autor,Administrador")]
+        [Authorize(Roles = "Autor")]
         public async Task<ActionResult<PostDto>> UpdatePost(int id, UpdatePostDto updatePostDto)
         {
             try
@@ -110,9 +157,8 @@ namespace BlogPersonal.API.Controllers
                 if (userIdClaim == null) return Unauthorized();
 
                 int userId = int.Parse(userIdClaim.Value);
-                var isAdmin = User.IsInRole("Administrador");
-
-                var command = new UpdatePostCommand(id, updatePostDto, userId, isAdmin);
+                // Only the Autor role can edit - IsAdmin check removed since only Autor should edit
+                var command = new UpdatePostCommand(id, updatePostDto, userId, true);
                 var result = await _mediator.Send(command);
 
                 return Ok(result);
@@ -128,7 +174,7 @@ namespace BlogPersonal.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Autor,Administrador")]
+        [Authorize(Roles = "Autor")]
         public async Task<ActionResult> DeletePost(int id)
         {
             try
@@ -137,9 +183,8 @@ namespace BlogPersonal.API.Controllers
                 if (userIdClaim == null) return Unauthorized();
 
                 int userId = int.Parse(userIdClaim.Value);
-                var isAdmin = User.IsInRole("Administrador");
-
-                var command = new DeletePostCommand(id, userId, isAdmin);
+                // Only the Autor role can delete
+                var command = new DeletePostCommand(id, userId, true);
                 var result = await _mediator.Send(command);
 
                 if (!result) return NotFound();

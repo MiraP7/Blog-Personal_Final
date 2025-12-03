@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
-import axios from 'axios';
+import { isAxiosError } from 'axios';
+import axiosInstance from '../api/axiosConfig';
+import { API_ENDPOINTS } from '../config/api';
 import { useAuth } from '../context/AuthContext';
 import { 
   Container, 
@@ -11,7 +13,8 @@ import {
   Box, 
   Alert, 
   Avatar,
-  Link
+  Link,
+  CircularProgress
 } from '@mui/material';
 import { LockOutlined as LockOutlinedIcon } from '@mui/icons-material';
 
@@ -22,23 +25,58 @@ const LoginPage: React.FC = () => {
     email: '',
     password: ''
   });
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
+  // Validación de formulario
+  const validateForm = (): boolean => {
+    const newErrors: { [key: string]: string } = {};
+
+    if (!formData.email) {
+      newErrors.email = 'El correo electrónico es requerido';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = 'Por favor ingresa un correo válido';
+    }
+
+    if (!formData.password) {
+      newErrors.password = 'La contraseña es requerida';
+    } else if (formData.password.length < 6) {
+      newErrors.password = 'La contraseña debe tener al menos 6 caracteres';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [name]: value
     });
+    // Limpiar error del campo cuando el usuario empieza a escribir
+    if (errors[name]) {
+      setErrors({
+        ...errors,
+        [name]: ''
+      });
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+
+    // Validar formulario antes de enviar
+    if (!validateForm()) {
+      return;
+    }
+
     setLoading(true);
 
     try {
-      const response = await axios.post('http://localhost:5141/api/auth/login', {
+      const response = await axiosInstance.post(API_ENDPOINTS.LOGIN, {
         email: formData.email,
         password: formData.password
       });
@@ -53,11 +91,11 @@ const LoginPage: React.FC = () => {
       }
     } catch (err: unknown) {
       console.error('Login error:', err);
-      if (axios.isAxiosError(err)) {
-        if (err.response && err.response.status === 401) {
+      if (isAxiosError(err)) {
+        if (err.response?.status === 401) {
           setError('Credenciales inválidas. Por favor verifica tu correo y contraseña.');
-        } else if (err.response && err.response.data) {
-          setError(typeof err.response.data === 'string' ? err.response.data : 'Error al iniciar sesión.');
+        } else if (err.response?.data?.message) {
+          setError(err.response.data.message);
         } else {
           setError('Ocurrió un error al conectar con el servidor.');
         }
@@ -105,6 +143,9 @@ const LoginPage: React.FC = () => {
               autoFocus
               value={formData.email}
               onChange={handleChange}
+              error={!!errors.email}
+              helperText={errors.email}
+              disabled={loading}
             />
             <TextField
               margin="normal"
@@ -117,6 +158,9 @@ const LoginPage: React.FC = () => {
               autoComplete="current-password"
               value={formData.password}
               onChange={handleChange}
+              error={!!errors.password}
+              helperText={errors.password}
+              disabled={loading}
             />
             
             <Button
@@ -126,7 +170,14 @@ const LoginPage: React.FC = () => {
               sx={{ mt: 3, mb: 2 }}
               disabled={loading}
             >
-              {loading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
+              {loading ? (
+                <>
+                  <CircularProgress size={24} sx={{ mr: 1 }} />
+                  Iniciando sesión...
+                </>
+              ) : (
+                'Iniciar Sesión'
+              )}
             </Button>
             
             <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>

@@ -1,4 +1,5 @@
 using BlogPersonal.Application;
+using BlogPersonal.API.Middlewares;
 using BlogPersonal.Infrastructure;
 using BlogPersonal.Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -12,15 +13,43 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
+// Configurar CORS según el ambiente
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowAll",
-        builder =>
-        {
-            builder.AllowAnyOrigin()
-                   .AllowAnyMethod()
-                   .AllowAnyHeader();
-        });
+    var corsPolicyName = "BlogPersonalCors";
+    
+    if (builder.Environment.IsDevelopment())
+    {
+        // En desarrollo: permitir localhost con diferentes puertos
+        options.AddPolicy(corsPolicyName,
+            builder =>
+            {
+                builder.WithOrigins(
+                    "http://localhost:3000",
+                    "http://localhost:5173",
+                    "http://127.0.0.1:3000",
+                    "http://127.0.0.1:5173"
+                )
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials();
+            });
+    }
+    else
+    {
+        // En producción: permitir solo dominios específicos desde configuración
+        var allowedOrigins = builder.Configuration.GetSection("CorsSettings:AllowedOrigins").Get<string[]>()
+            ?? new[] { "https://yourdomain.com" };
+
+        options.AddPolicy(corsPolicyName,
+            builder =>
+            {
+                builder.WithOrigins(allowedOrigins)
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials();
+            });
+    }
 });
 
 builder.Services.AddControllers();
@@ -101,7 +130,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors("AllowAll");
+// Registrar middleware de manejo global de excepciones
+app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
+
+app.UseCors("BlogPersonalCors");
 
 app.UseHttpsRedirection();
 

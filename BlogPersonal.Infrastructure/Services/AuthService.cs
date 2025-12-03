@@ -2,6 +2,7 @@ using AutoMapper;
 using BlogPersonal.Application.DTOs.Auth;
 using BlogPersonal.Application.Interfaces;
 using BlogPersonal.Domain.Entities;
+using BlogPersonal.Domain.Exceptions;
 using BlogPersonal.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -30,7 +31,7 @@ namespace BlogPersonal.Infrastructure.Services
 
             if (user == null || !BCrypt.Net.BCrypt.Verify(loginDto.Password, user.PasswordHash))
             {
-                throw new Exception("Credenciales inválidas");
+                throw new InvalidCredentialsException();
             }
 
             var token = _jwtTokenGenerator.GenerateToken(user);
@@ -49,21 +50,20 @@ namespace BlogPersonal.Infrastructure.Services
         {
             if (await _context.Usuarios.AnyAsync(u => u.Email == registerDto.Email))
             {
-                throw new Exception("El email ya está registrado");
+                throw new UserAlreadyExistsException(registerDto.Email);
             }
 
             if (await _context.Usuarios.AnyAsync(u => u.NombreUsuario == registerDto.NombreUsuario))
             {
-                throw new Exception("El nombre de usuario ya está en uso");
+                throw new DuplicateUsernameException(registerDto.NombreUsuario);
             }
 
-            // Default role: Usuario (Readers who can comment)
+            // Default role: Usuario (Registered users who can view private posts and comment)
+            // The "Autor" role is reserved for the blog creator and cannot be assigned to new users
             var defaultRole = await _context.Roles.FirstOrDefaultAsync(r => r.Nombre == "Usuario");
             if (defaultRole == null)
             {
-                // Fallback to Autor if Usuario doesn't exist (should not happen with seed)
-                defaultRole = await _context.Roles.FirstOrDefaultAsync(r => r.Nombre == "Autor");
-                if (defaultRole == null) throw new Exception("Rol por defecto no encontrado");
+                throw new DefaultRoleNotFoundException();
             }
 
             var user = new Usuario

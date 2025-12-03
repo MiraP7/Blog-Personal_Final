@@ -3298,11 +3298,11 @@
         "net9.0": {
           "targetAlias": "net9.0",
           "projectReferences": {
-            "C:\\Users\\Admin\\Documents\\UNICDA-Asignaciones-Soft\\Programacion-de-servicios-Web-2\\Blog-Personal_Final\\BlogPersonal.Application\\BlogPersonal.Application.csproj": {
-              "projectPath": "C:\\Users\\Admin\\Documents\\UNICDA-Asignaciones-Soft\\Programacion-de-servicios-Web-2\\Blog-Personal_Final\\BlogPersonal.Application\\BlogPersonal.Application.csproj"
+            "c:\\Users\\Admin\\Documents\\UNICDA-Asignaciones-Soft\\Programacion-de-servicios-Web-2\\Blog-Personal_Final\\BlogPersonal.Application\\BlogPersonal.Application.csproj": {
+              "projectPath": "c:\\Users\\Admin\\Documents\\UNICDA-Asignaciones-Soft\\Programacion-de-servicios-Web-2\\Blog-Personal_Final\\BlogPersonal.Application\\BlogPersonal.Application.csproj"
             },
-            "C:\\Users\\Admin\\Documents\\UNICDA-Asignaciones-Soft\\Programacion-de-servicios-Web-2\\Blog-Personal_Final\\BlogPersonal.Domain\\BlogPersonal.Domain.csproj": {
-              "projectPath": "C:\\Users\\Admin\\Documents\\UNICDA-Asignaciones-Soft\\Programacion-de-servicios-Web-2\\Blog-Personal_Final\\BlogPersonal.Domain\\BlogPersonal.Domain.csproj"
+            "c:\\Users\\Admin\\Documents\\UNICDA-Asignaciones-Soft\\Programacion-de-servicios-Web-2\\Blog-Personal_Final\\BlogPersonal.Domain\\BlogPersonal.Domain.csproj": {
+              "projectPath": "c:\\Users\\Admin\\Documents\\UNICDA-Asignaciones-Soft\\Programacion-de-servicios-Web-2\\Blog-Personal_Final\\BlogPersonal.Domain\\BlogPersonal.Domain.csproj"
             }
           }
         }

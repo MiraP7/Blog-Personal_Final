@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { isAxiosError } from 'axios';
+import axiosInstance from '../api/axiosConfig';
+import { API_ENDPOINTS } from '../config/api';
 import { useAuth } from '../context/AuthContext';
 import { 
   Container, 
@@ -15,7 +17,8 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  type SelectChangeEvent
+  type SelectChangeEvent,
+  CircularProgress
 } from '@mui/material';
 import { Save as SaveIcon, Cancel as CancelIcon, Create as CreateIcon } from '@mui/icons-material';
 import TagSelector, { type Tag } from '../components/TagSelector';
@@ -30,6 +33,7 @@ const CreatePostPage: React.FC = () => {
     slug: '',
     estadoId: 1 // Default to Guardado (Borrador)
   });
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [selectedTags, setSelectedTags] = useState<Tag[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -49,6 +53,36 @@ const CreatePostPage: React.FC = () => {
       .replace(/(^-|-$)+/g, '');
   };
 
+  // Validación del formulario
+  const validateForm = (): boolean => {
+    const newErrors: { [key: string]: string } = {};
+
+    if (!formData.titulo.trim()) {
+      newErrors.titulo = 'El título es requerido';
+    } else if (formData.titulo.length < 5) {
+      newErrors.titulo = 'El título debe tener al menos 5 caracteres';
+    } else if (formData.titulo.length > 200) {
+      newErrors.titulo = 'El título no puede exceder 200 caracteres';
+    }
+
+    if (!formData.resumen.trim()) {
+      newErrors.resumen = 'El resumen es requerido';
+    } else if (formData.resumen.length < 20) {
+      newErrors.resumen = 'El resumen debe tener al menos 20 caracteres';
+    } else if (formData.resumen.length > 500) {
+      newErrors.resumen = 'El resumen no puede exceder 500 caracteres';
+    }
+
+    if (!formData.contenido.trim()) {
+      newErrors.contenido = 'El contenido es requerido';
+    } else if (formData.contenido.length < 50) {
+      newErrors.contenido = 'El contenido debe tener al menos 50 caracteres';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => {
@@ -58,6 +92,14 @@ const CreatePostPage: React.FC = () => {
       }
       return newData;
     });
+
+    // Limpiar error del campo cuando el usuario empieza a escribir
+    if (errors[name]) {
+      setErrors({
+        ...errors,
+        [name]: ''
+      });
+    }
   };
 
   const handleStatusChange = (e: SelectChangeEvent<number>) => {
@@ -66,8 +108,14 @@ const CreatePostPage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
     setError(null);
+
+    // Validar formulario antes de enviar
+    if (!validateForm()) {
+      return;
+    }
+
+    setLoading(true);
 
     try {
       const postData = {
@@ -79,16 +127,22 @@ const CreatePostPage: React.FC = () => {
         etiquetaIds: selectedTags.map(t => t.id)
       };
 
-      await axios.post('http://localhost:5141/api/posts', postData, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
+      await axiosInstance.post(API_ENDPOINTS.CREATE_POST, postData);
 
       navigate('/');
     } catch (err: unknown) {
       console.error('Error creating post:', err);
-      setError('Error al crear el post. Verifica que tengas permisos.');
+      if (isAxiosError(err)) {
+        if (err.response?.status === 401) {
+          navigate('/login');
+        } else if (err.response?.data?.message) {
+          setError(err.response.data.message);
+        } else {
+          setError('Error al crear el post. Por favor, intenta de nuevo.');
+        }
+      } else {
+        setError('Error inesperado al crear el post.');
+      }
     } finally {
       setLoading(false);
     }
@@ -120,6 +174,9 @@ const CreatePostPage: React.FC = () => {
               required
               fullWidth
               variant="outlined"
+              error={!!errors.titulo}
+              helperText={errors.titulo}
+              disabled={loading}
             />
 
             <TextField
@@ -134,6 +191,7 @@ const CreatePostPage: React.FC = () => {
               InputProps={{
                 readOnly: false,
               }}
+              disabled={loading}
             />
 
             <TextField
@@ -147,6 +205,8 @@ const CreatePostPage: React.FC = () => {
               rows={3}
               variant="outlined"
               helperText="Breve descripción que aparecerá en el listado."
+              error={!!errors.resumen}
+              disabled={loading}
             />
 
             <TagSelector 
@@ -179,6 +239,9 @@ const CreatePostPage: React.FC = () => {
               rows={10}
               variant="outlined"
               sx={{ fontFamily: 'monospace' }}
+              error={!!errors.contenido}
+              helperText={errors.contenido}
+              disabled={loading}
             />
 
             <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, pt: 2 }}>
@@ -187,6 +250,7 @@ const CreatePostPage: React.FC = () => {
                 color="inherit"
                 startIcon={<CancelIcon />}
                 onClick={() => navigate('/')}
+                disabled={loading}
               >
                 Cancelar
               </Button>
@@ -195,7 +259,7 @@ const CreatePostPage: React.FC = () => {
                 variant="contained"
                 color="primary"
                 disabled={loading}
-                startIcon={<SaveIcon />}
+                startIcon={loading ? <CircularProgress size={20} /> : <SaveIcon />}
               >
                 {loading ? 'Procesando...' : (formData.estadoId === 1 ? 'Guardar Borrador' : 'Publicar')}
               </Button>

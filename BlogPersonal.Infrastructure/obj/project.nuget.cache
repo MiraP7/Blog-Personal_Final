@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "5QIyNyO0EZc=",
+  "dgSpecHash": "Bc2VMmtR64Y=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Admin\\Documents\\UNICDA-Asignaciones-Soft\\Programacion-de-servicios-Web-2\\Blog-Personal_Final\\BlogPersonal.Infrastructure\\BlogPersonal.Infrastructure.csproj",
+  "projectFilePath": "c:\\Users\\Admin\\Documents\\UNICDA-Asignaciones-Soft\\Programacion-de-servicios-Web-2\\Blog-Personal_Final\\BlogPersonal.Infrastructure\\BlogPersonal.Infrastructure.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Admin\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",

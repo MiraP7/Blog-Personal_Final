@@ -15,6 +15,7 @@ import {
 } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import CommentIcon from '@mui/icons-material/Comment';
+import { useAuth } from '../context/AuthContext';
 
 interface Post {
   id: number;
@@ -36,6 +37,7 @@ const HomePage: React.FC = () => {
   const searchTerm = searchParams.get('search');
   const theme = useTheme();
   const location = useLocation(); // Para detectar navegación
+  const { token } = useAuth(); // Obtener token de autenticación
 
   const fetchPosts = useCallback(async (showLoading = true) => {
     if (showLoading) setLoading(true);
@@ -43,14 +45,18 @@ const HomePage: React.FC = () => {
       const url = searchTerm 
         ? `http://localhost:5141/api/posts?search=${encodeURIComponent(searchTerm)}`
         : 'http://localhost:5141/api/posts';
+      
+      // Configurar headers incluyendo Authorization si hay token
+      const headers: Record<string, string> = {
+        'Cache-Control': 'no-cache',
+        'Pragma': 'no-cache'
+      };
+      
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
         
-      // Agregar timestamp para evitar caché del navegador
-      const response = await axios.get(url, {
-        headers: {
-          'Cache-Control': 'no-cache',
-          'Pragma': 'no-cache'
-        }
-      });
+      const response = await axios.get(url, { headers });
       const data = response.data;
       const items = Array.isArray(data) ? data : (data.items || []);
 
@@ -62,7 +68,7 @@ const HomePage: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  }, [searchTerm]);
+  }, [searchTerm, token]);
 
   // Cargar al montar y cuando cambia searchTerm o navegación
   useEffect(() => {

@@ -52,7 +52,13 @@ const PostDetailPage: React.FC = () => {
 
   const fetchPostAndComments = useCallback(async () => {
     try {
-      const postRes = await axios.get(`http://localhost:5141/api/posts/slug/${slug}`);
+      // Configurar headers incluyendo Authorization si hay token
+      const headers: Record<string, string> = {};
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+
+      const postRes = await axios.get(`http://localhost:5141/api/posts/slug/${slug}`, { headers });
       setPost(postRes.data);
       
       if (postRes.data.id) {
@@ -64,7 +70,7 @@ const PostDetailPage: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  }, [slug]);
+  }, [slug, token]);
 
   useEffect(() => {
     fetchPostAndComments();
